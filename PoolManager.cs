@@ -18,11 +18,16 @@ namespace Subtegral.PoolUtility
             return _instance;
         }
 
-        public static void GenerateNewPool<T>(T target) where T : PoolableObject
+        public static void DestroyInstance()
+        {
+            _instance = new PoolManager();
+        }
+        
+        public static void GenerateNewPool<T>(T target,int size=5) where T : PoolableObject
         {
             if (_instance.pools.Any(x => x.GetPoolType() == target))
                 throw new System.Exception("This type is already pooled!");
-            _instance.pools.Add(new GenericPool<PoolableObject>(target));
+            _instance.pools.Add(new GenericPool<PoolableObject>(target,size));
         }
 
         public static T RequestSpawnForType<T>(T targetType, SpawnDataContainer container) where T : PoolableObject
